@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taotao2345/aws-lambda-publishlayer.git"
+    "url": "git+https://github.com/killdozerx2/aws-lambda-publishlayer.git"
   },
   "keywords": [
     "actions",
     "aws",
     "lambda"
   ],
-  "author": "taotao2345",
+  "author": "killdozerx2",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
     "@semantic-release/release-notes-generator": "^9.0.3",
     "@types/aws-sdk": "^2.7.0",
     "@types/jest": "^24.0.22",
