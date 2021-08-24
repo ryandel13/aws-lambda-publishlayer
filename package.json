@@ -9,8 +9,7 @@
     "prettier": "prettier src/**/*.ts --write",
     "format": "npm run prettier && npm run lint",
     "prebuild": "tsc -p .",
-    "build": "ncc build",
-    "prepack": "npm run build"
+    "build": "ncc build"
   },
   "repository": {
     "type": "git",
