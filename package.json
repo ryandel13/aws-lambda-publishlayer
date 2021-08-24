@@ -1,6 +1,6 @@
 {
   "name": "aws-lambda-publishlayer",
-  "version": "0.0.0-development",
+  "version": "1.2.0",
   "description": "AWS Lambda Layer Publish",
   "main": "dist/index.js",
   "scripts": {
