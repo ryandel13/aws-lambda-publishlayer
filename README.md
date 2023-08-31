@@ -1,6 +1,4 @@
 # GitHub Action - AWS Lambda Layer Publish with compatible runtime
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/killdozerx2/aws-lambda-publishlayer)  [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-
 Deploy a layer to aws lambda
 
 # Usage
@@ -16,14 +14,16 @@ Add Secret before this action. `Settings > Secrets > Add a new secret`
 ## Example
 ```yml
 - name: AWS Lambda Layer Publish
-  uses: killdozerx2/aws-lambda-publishlayer@v1.2.0
+  uses: ryandel13/aws-lambda-publishlayer@v1.2.0
   env:
     AWS_REGION: ${{ secrets.AWS_REGION }}
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   with:
-    layer_name: TargetFunctionName
+    layer_name: TargetLayerName
     zip_file: path/to/file.zip
+    lambda_name: TargetFunctionName (comma separated list)
+    replace: false
     description: 'verbose description of the layer, not required'
     # An array of compatible runtimes, pass as a string, remember to json-stringify the array before including it here, not required
     compatible_runtimes: '["any", "aws", "compatible", "runtime"]' 
@@ -33,5 +33,4 @@ Add Secret before this action. `Settings > Secrets > Add a new secret`
 * Make sure to use the JSON array format rather than the YAML sequence format
 
 ## Important
-This action was forked from [taotao2345/aws-lambda-publishlayer](https://github.com/taotao2345/aws-lambda-publishlayer).  
-However, @taotao has not reacted to the pull request and hence this action exists, if you are @taotao or you know @taotao please consider accepting/rejecting the ppull_request.
+This action was forked from [killdozerx2/aws-lambda-publishlayer](https://github.com/killdozerx2/aws-lambda-publishlayer). I added the feature to attach the new layer to one or more functions within the same action as this was more handy for my current project.

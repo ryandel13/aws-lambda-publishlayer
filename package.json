@@ -1,6 +1,6 @@
 {
   "name": "aws-lambda-publishlayer",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "description": "AWS Lambda Layer Publish",
   "main": "dist/index.js",
   "scripts": {
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/killdozerx2/aws-lambda-publishlayer.git"
+    "url": "git+https://github.com/ryandel13/aws-lambda-publishlayer.git"
   },
   "keywords": [
     "actions",
     "aws",
     "lambda"
   ],
-  "author": "killdozerx2",
+  "author": "Ryandel13",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",

@@ -3,10 +3,12 @@ import Lambda from 'aws-sdk/clients/lambda'
 import fs from 'fs'
 
 async function run() {
-    core.info('TEST');
     try {
         const LayerName = core.getInput('layer_name', { required: true })
+        const LambdaNames = core.getInput('lambda_name', { required: true })
         const zipFile = core.getInput('zip_file', { required: true })
+        const replace = core.getInput('replaceLayer', { required: true })
+
         let Description = '';
         // Check if description was provided or not
         if (core.getInput('description', { required: false }) !== '') {
@@ -44,17 +46,23 @@ async function run() {
         core.setOutput('LayerVersionArn', response.LayerVersionArn);
         core.info(`Publish Success : ${response.LayerVersionArn}`)
 
-        core.info('Attaching Layer to function');
+        core.info('Attaching Layer to Function');
+        const LayerVersionArnList: Lambda.Types.LayerList = [];
 
-        const layer: Lambda.Types.Layer = {
-            Arn: response.LayerVersionArn,
-        }
+        const LambdaNamesAr = LambdaNames.split(',');
+        for (const LambdaName of LambdaNamesAr) {
+            if (!replace) {
+                const functionConfig = await lambda.getFunctionConfiguration({ FunctionName: LambdaName }).promise();
+                if (functionConfig.Layers) {
 
-
-        const functionConfig = await lambda.getFunctionConfiguration().promise();
-        if (functionConfig.Layers) {
-            functionConfig.Layers.push(layer)
-            const response2 = await lambda.updateFunctionConfiguration()
+                    const LayerVersionArnList: Lambda.Types.LayerList = [];
+                    for (const l of functionConfig.Layers) {
+                        if (l.Arn) LayerVersionArnList.push(l.Arn);
+                    }
+                }
+            }
+            if (response.LayerVersionArn) LayerVersionArnList.push(response.LayerVersionArn);
+            await lambda.updateFunctionConfiguration({ FunctionName: LambdaName, Layers: LayerVersionArnList }).promise();
         }
 
     } catch (error) {
