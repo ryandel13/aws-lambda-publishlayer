@@ -26535,14 +26535,14 @@ async function run() {
             maxRetries: 2,
             region: process.env.AWS_REGION,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-            sslEnabled: true,
+            sslEnabled: true
         };
         const lambda = new lambda_1.default(lambdaConfig);
         core.info('Publishing...');
         const response = await lambda
             .publishLayerVersion({
             Content: {
-                ZipFile: fs_1.default.readFileSync(zipFile),
+                ZipFile: fs_1.default.readFileSync(zipFile)
             },
             LayerName,
             CompatibleRuntimes,
@@ -26556,7 +26556,9 @@ async function run() {
         const LambdaNamesAr = LambdaNames.split(',');
         for (const LambdaName of LambdaNamesAr) {
             if (!replace) {
-                const functionConfig = await lambda.getFunctionConfiguration({ FunctionName: LambdaName }).promise();
+                const functionConfig = await lambda
+                    .getFunctionConfiguration({ FunctionName: LambdaName })
+                    .promise();
                 if (functionConfig.Layers) {
                     const LayerVersionArnList = [];
                     for (const l of functionConfig.Layers) {
@@ -26567,11 +26569,16 @@ async function run() {
             }
             if (response.LayerVersionArn)
                 LayerVersionArnList.push(response.LayerVersionArn);
-            await lambda.updateFunctionConfiguration({ FunctionName: LambdaName, Layers: LayerVersionArnList }).promise();
+            await lambda
+                .updateFunctionConfiguration({
+                FunctionName: LambdaName,
+                Layers: LayerVersionArnList
+            })
+                .promise();
         }
     }
     catch (error) {
-        if (typeof error === "string") {
+        if (typeof error === 'string') {
             error.toUpperCase(); // works, `e` narrowed to string
             core.error(error);
         }
