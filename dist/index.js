@@ -26560,7 +26560,6 @@ async function run() {
                     .getFunctionConfiguration({ FunctionName: LambdaName })
                     .promise();
                 if (functionConfig.Layers) {
-                    const LayerVersionArnList = [];
                     for (const l of functionConfig.Layers) {
                         if (l.Arn)
                             LayerVersionArnList.push(l.Arn);
