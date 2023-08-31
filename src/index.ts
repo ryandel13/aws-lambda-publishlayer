@@ -7,7 +7,7 @@ async function run() {
         const LayerName = core.getInput('layer_name', { required: true })
         const LambdaNames = core.getInput('lambda_name', { required: true })
         const zipFile = core.getInput('zip_file', { required: true })
-        const replace = core.getInput('replaceLayer', { required: true })
+        const replace = core.getInput('replace', { required: true })
 
         let Description = '';
         // Check if description was provided or not

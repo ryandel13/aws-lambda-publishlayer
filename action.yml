@@ -1,9 +1,15 @@
 name: 'AWS Lambda Layer Publish with compatible runtime'
 description: 'Run PublishLayerVersion'
-author: 'KillDozerX2'
+author: 'Ryandel13'
 inputs: 
   layer_name:
     description: 'Target layer name'
+    required: true
+  lambda_name:
+    description: 'Target lambda name'
+    required: true
+  replace:
+    description: 'Replace other old Layers from Lambda'
     required: true
   zip_file:
     description: 'Package zip file path'
