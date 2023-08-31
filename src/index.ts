@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import Lambda from 'aws-sdk/clients/lambda'
 import fs from 'fs'
 
-async function run() {
+async function run(): Promise<void> {
   try {
     const LayerName = core.getInput('layer_name', { required: true })
     const LambdaNames = core.getInput('lambda_name', { required: true })
@@ -58,7 +58,6 @@ async function run() {
           .getFunctionConfiguration({ FunctionName: LambdaName })
           .promise()
         if (functionConfig.Layers) {
-          const LayerVersionArnList: Lambda.Types.LayerList = []
           for (const l of functionConfig.Layers) {
             if (l.Arn) LayerVersionArnList.push(l.Arn)
           }
