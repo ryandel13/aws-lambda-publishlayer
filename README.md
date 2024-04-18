@@ -33,4 +33,5 @@ Add Secret before this action. `Settings > Secrets > Add a new secret`
 * Make sure to use the JSON array format rather than the YAML sequence format
 
 ## Important
-This action was forked from [killdozerx2/aws-lambda-publishlayer](https://github.com/killdozerx2/aws-lambda-publishlayer). I added the feature to attach the new layer to one or more functions within the same action as this was more handy for my current project.
+This action was forked from [killdozerx2/aws-lambda-publishlayer](https://github.com/killdozerx2/aws-lambda-publishlayer). Added the feature to apply the new layer to one or more functions within the same action as this was more handy for my current project.
+Also updated nearly all dependencies for the buildprocess

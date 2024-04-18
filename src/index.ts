@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import Lambda from 'aws-sdk/clients/lambda'
+import { Lambda, LambdaClientConfig } from '@aws-sdk/client-lambda';
 import fs from 'fs'
 
 async function run(): Promise<void> {
@@ -21,13 +21,17 @@ async function run(): Promise<void> {
       )
     }
 
-    const lambdaConfig: Lambda.Types.ClientConfiguration = {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    const accessKeyId = process?.env?.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : '';
+    const secretAccessKey = process?.env?.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : '';
+
+    const lambdaConfig: LambdaClientConfig = {
+      credentials: {
+        accessKeyId,
+        secretAccessKey,
+      },
       apiVersion: '2015-03-31',
-      maxRetries: 2,
       region: process.env.AWS_REGION,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      sslEnabled: true
+      maxAttempts: 2,
     }
 
     const lambda = new Lambda(lambdaConfig)
@@ -43,20 +47,18 @@ async function run(): Promise<void> {
         CompatibleRuntimes,
         Description
       })
-      .promise()
 
     core.setOutput('LayerVersionArn', response.LayerVersionArn)
     core.info(`Publish Success : ${response.LayerVersionArn}`)
 
     core.info('Attaching Layer to Function')
-    const LayerVersionArnList: Lambda.Types.LayerList = []
+    const LayerVersionArnList: Array<string> = []
 
     const LambdaNamesAr = LambdaNames.split(',')
     for (const LambdaName of LambdaNamesAr) {
       if (!replace) {
         const functionConfig = await lambda
           .getFunctionConfiguration({ FunctionName: LambdaName })
-          .promise()
         if (functionConfig.Layers) {
           for (const l of functionConfig.Layers) {
             if (l.Arn) LayerVersionArnList.push(l.Arn)
@@ -70,7 +72,6 @@ async function run(): Promise<void> {
           FunctionName: LambdaName,
           Layers: LayerVersionArnList
         })
-        .promise()
     }
   } catch (error) {
     if (typeof error === 'string') {
